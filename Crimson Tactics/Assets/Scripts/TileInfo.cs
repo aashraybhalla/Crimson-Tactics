@@ -4,6 +4,7 @@ public class TileInfo : MonoBehaviour
 {
 	public int x;
 	public int y;
+	public bool tileHasObstacle = false; // Added obstacle flag
 	private Renderer tileRenderer;
 	private Color originalColor;
 
@@ -17,6 +18,7 @@ public class TileInfo : MonoBehaviour
 	{
 		this.x = x;
 		this.y = y;
+		transform.localPosition = new Vector3(x, 0, y); // Update position in the world
 	}
 
 	public void Highlight()
@@ -27,9 +29,5 @@ public class TileInfo : MonoBehaviour
 	public void ResetHighlight()
 	{
 		tileRenderer.material.color = originalColor;
-		StopAllCoroutines(); // Stop jiggling effect if any
-		transform.localPosition = new Vector3(x, 0, y); // Reset position
 	}
-
-	
 }

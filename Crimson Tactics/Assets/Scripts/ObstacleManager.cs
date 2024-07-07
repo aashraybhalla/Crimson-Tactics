@@ -3,10 +3,12 @@
 public class ObstacleManager : MonoBehaviour
 {
 	public GameObject obstaclePrefab; 
-	public ObstacleData obstacleData; 
+	public ObstacleData obstacleData;
+	private GameObject[,] grid; // Assuming you have a grid of GameObjects
 
 	void Start()
 	{
+		grid = new GameObject[obstacleData.obstacleData.columns, obstacleData.obstacleData.rows];
 		GenerateObstacles();
 	}
 
@@ -22,7 +24,16 @@ public class ObstacleManager : MonoBehaviour
 				if (obstacleData.obstacleData[x, y])
 				{
 					Vector3 position = new Vector3(x, 0.5f, y); 
-					Instantiate(obstaclePrefab, position, Quaternion.identity);
+					GameObject obstacle = Instantiate(obstaclePrefab, position, Quaternion.identity);
+					grid[x, y] = obstacle; // Assign the obstacle to the grid
+
+					// Check if the obstacle has the TileInfo component
+					TileInfo tile = obstacle.GetComponent<TileInfo>();
+					if (tile != null)
+					{
+						tile.tileHasObstacle = true;
+						tile.SetPosition(x, y); // Update position in TileInfo
+					}
 				}
 			}
 		}
